@@ -72,9 +72,8 @@ def compute_lvLA(P, lv):
         xtrans = min(proj[hull.vertices,0])
         ytrans = min(proj[hull.vertices,1])
 
-        fig = plt.figure()
-
-        plt.plot(proj[hull.vertices,0],proj[hull.vertices,1])
+        # fig = plt.figure()
+        # plt.plot(proj[hull.vertices,0],proj[hull.vertices,1])
 
         projections = []
         for ii in range(0,len(hull.vertices)):
@@ -82,12 +81,12 @@ def compute_lvLA(P, lv):
                                 proj[hull.vertices[ii],1] - ytrans+5])
 
         projections = np.array(projections)
-        print(projections)
+        # print(projections)
 
         image_shape = (250,250)
         polygon = projections
         mask = polygon2mask(image_shape,polygon)
-        print(mask)
+        # print(mask)
         img = mask
         label_img = label(img)
         regions = regionprops(label_img)
@@ -106,7 +105,7 @@ def compute_lvLA(P, lv):
     long_axisv = mvcenter - apex
 
     long_axis = long_axisv/np.linalg.norm(long_axisv)
-    print(long_axis)
+    # print(long_axis)
     # print('apex1',apex)
     return long_axis,mvcenter,apex
 

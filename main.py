@@ -4,7 +4,7 @@ from LV_longAxis import compute_lvLA
 from generateLVpts import genPts
 from transform import transform
 from plot_LV_RV import plot_lv_rv
-
+from generatePVpts import genPVpts
 def main():
 
 	####### first work with LV to establish a reference for the RV #######
@@ -24,26 +24,26 @@ def main():
 
 	####### Now work with the RV #######
 	rv = np.loadtxt('N2_RV_P0.dat')
-	plot_lv_rv(lv,rv,mvcenter,apex)
+	# plot_lv_rv(lv,rv,mvcenter,apex)
 
 	# Transform the RV into LV centric system 
-	print(apex)
-	print('')
-	print(mvcenter)
+	# print(apex)
+	# print('')
+	# print(mvcenter)
 	apex, lv, rv = transform(apex,mvcenter,long_axis,lv,rv)
-	print(apex)
+	
+	# print(apex)
 	
 	# transformedData = apex, lv, transformed_rv
 	
 	mvcenter = np.zeros((3))
-	print(mvcenter)
+	# print(mvcenter)
 
 	# Plot the LV-RV system for visualization 
-	plot_lv_rv(lv,rv,mvcenter,apex)
-	
-
+	plot_lv_rv(lv,rv,mvcenter,apex)	
 	# # generates points that fit a plane at the PV
-	# pvPt = generatePVpts(rv)
+	pv_vec,pv_ctd = genPVpts(rv)
+	print(pv_vec,pv_ctd)
 	# # pvPt = [pv_vec, ctd_pv]
 
 	# # generates points that fit a plane at the apex
