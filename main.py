@@ -5,6 +5,9 @@ from generateLVpts import genPts
 from transform import transform
 from plot_LV_RV import plot_lv_rv
 from generatePVpts import genPVpts
+from generateApexPoints import genApexPts
+from plot_LV_RV import plot_endPlanes
+
 def main():
 
 	####### first work with LV to establish a reference for the RV #######
@@ -27,14 +30,8 @@ def main():
 	# plot_lv_rv(lv,rv,mvcenter,apex)
 
 	# Transform the RV into LV centric system 
-	# print(apex)
-	# print('')
-	# print(mvcenter)
-	apex, lv, rv = transform(apex,mvcenter,long_axis,lv,rv)
-	
-	# print(apex)
-	
-	# transformedData = apex, lv, transformed_rv
+	apex, lv, rv = transform(apex,mvcenter,long_axis,lv,rv)	
+	print(apex)
 	
 	mvcenter = np.zeros((3))
 	# print(mvcenter)
@@ -44,13 +41,13 @@ def main():
 	# # generates points that fit a plane at the PV
 	pv_vec,pv_ctd = genPVpts(rv)
 	print(pv_vec,pv_ctd)
-	# # pvPt = [pv_vec, ctd_pv]
 
 	# # generates points that fit a plane at the apex
-	# rwPt = generateApexPts(rv,pvPt[1])
-	# # rwPt = [rw_vec, ctd_rw]
+	rw_vec,rw_ctd = genApexPts(rv,pv_ctd)
 
-	# plot_endPlanes(rwPt,pvPt,rv)
+	print(rw_vec,rw_ctd)
+
+	plot_endPlanes(pv_vec,rw_vec,pv_ctd,rw_ctd)
 
 	# # Initiate the Bezier Curve (central axis) having fixed end points and normals
 	# gp0 = rwPt[1][0]

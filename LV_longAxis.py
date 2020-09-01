@@ -9,12 +9,13 @@ np.set_printoptions(threshold=sys.maxsize)
 from matplotlib.path import Path 
 from skimage.measure import label, regionprops
 from skimage.draw import polygon2mask 
+from tools import affine_fit
 
 '''
-functions that find the center of the mitral valve (mv)
-determines the location of the apex
+-functions that find the center of the mitral valve (mv)
+-determines the location of the apex
 
-using the mvcenter and apex the LV's long axis is computed
+using the mvcenter and apex, the LV's long axis is computed
 '''
 
 def compute_lvLA(P, lv):
@@ -36,7 +37,7 @@ def compute_lvLA(P, lv):
         # evaluate LV's top plane and fit a plane on to the data points
         top_plane = np.array(top_plane)
         [n, V, mvcenter] = affine_fit(top_plane)
-        n = np.array(n.T)
+        n = np.array(n)
         tngnt = n
         node_pt = mvcenter
 
@@ -100,12 +101,12 @@ def compute_lvLA(P, lv):
         proj_ctd = np.array([xcentroid+xtrans-5, ycentroid+ytrans-5])
         mvcenter = proj_ctd[0]*v1n + proj_ctd[1]*v2n + node_pt
 
-    apex = generateApexPts(lv)
+    apex = generateLVApexPts(lv)
 
     long_axisv = mvcenter - apex
 
     long_axis = long_axisv/np.linalg.norm(long_axisv)
-    # print(long_axis)
+    print("long_axis = ",long_axis)
     # print('apex1',apex)
     return long_axis,mvcenter,apex
 
@@ -120,21 +121,10 @@ def proj_on_plane(n, X, a):
     return np.array([avec, b])
 
 
-def affine_fit(X):
+    # should come back and refine this function 
+    # probably want to switch this into a seperate function 
 
-    p = np.mean(X, axis=0)
-    # pmeany = np.mean(X,axis =1)
-    # pmeanz = np.mean(X,axis=2)
-    # p = np.array([[pmeanx,pmeany,pmeanz]])
-    R = np.array(X[...,:] - p)
-    t = np.dot(R.T, R)
-    [w, v] = np.linalg.eig(t)
-    n = np.array(v[:,2])
-    V = np.array(v[:, 1:])
-    return [n, V, p]
-
-
-def generateApexPts(lv):
+def generateLVApexPts(lv):
     zmin = np.min(lv[:, 2])
     location = np.where( lv == zmin)
     # print('locations',location)
