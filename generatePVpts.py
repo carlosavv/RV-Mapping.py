@@ -9,12 +9,14 @@ from plot_LV_RV import plot_rv
 def genPVpts(rv):
 
 	# plot_rv(rv)
-	print('Enter x,y,z coordinates located at the PV: ')
+	# print('Enter x,y,z coordinates located at the PV: ')
 	
 	n = 3
-	candidate_pt = []
-	for i in range(0,n):
-		candidate_pt.append(float(input()))
+	# for now keep this input for testing of code 
+	candidate_pt = [2,-34,17]
+	
+	# for i in range(0,n):
+	# 	candidate_pt.append(float(input()))
 
 
 	lowerBound = np.array(rv[rv[:,2] == min(rv[:,2])][0])
