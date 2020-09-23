@@ -26,11 +26,13 @@ def main():
 	# lvData = [long_axis, mvcenter, apex]
 
 	####### Now work with the RV #######
-	rv = np.loadtxt('N2_RV_P0.dat')
+	rv_file = 'N2_RV_P0'
+	rv = np.loadtxt(rv_file + '.dat')
 	# plot_lv_rv(lv,rv,mvcenter,apex)
 
 	# Transform the RV into LV centric system 
 	apex, lv, rv = transform(apex,mvcenter,long_axis,lv,rv)	
+	np.savetxt('transformed_' + rv_file + '.csv',rv,delimiter = ',')
 	print(apex)
 	
 	mvcenter = np.zeros((3))
