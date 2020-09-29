@@ -13,7 +13,7 @@ def main():
 	####### first work with LV to establish a reference for the RV #######
 
 	# load the lv 
-	lv = np.loadtxt('Normal2_P0_LV.dat')
+	lv = np.loadtxt('Normal2_P4_LV.dat')
 
 	# find points within the vicinity of the maximum z point value
 	P = genPts(lv)
@@ -26,7 +26,7 @@ def main():
 	# lvData = [long_axis, mvcenter, apex]
 
 	####### Now work with the RV #######
-	rv_file = 'N2_RV_P0'
+	rv_file = 'N2_RV_P4'
 	rv = np.loadtxt(rv_file + '.dat')
 	# plot_lv_rv(lv,rv,mvcenter,apex)
 
