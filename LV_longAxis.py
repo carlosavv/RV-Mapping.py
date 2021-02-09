@@ -92,8 +92,11 @@ def compute_lvLA(P, lv):
         label_img = label(img)
         regions = regionprops(label_img)
         for props in regions:
+            
             xcentroid = props.centroid[0]
             ycentroid = props.centroid[1]
+            print(props.centroid)
+
         # xcentroid = np.mean(proj[:,0]) + xtrans-5
         # ycentroid = np.mean(proj[:,1]) + ytrans-5
 

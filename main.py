@@ -6,14 +6,15 @@ from transform import transform
 from plot_LV_RV import plot_lv_rv
 from generatePVpts import genPVpts
 from generateApexPoints import genApexPts
-from plot_LV_RV import plot_endPlanes
-
+from plot_LV_RV import plot_endPlanes, plot_bezier,plot_rv
+from guess_central_axis import guess_CA
 def main():
 
 	####### first work with LV to establish a reference for the RV #######
 
 	# load the lv 
-	lv = np.loadtxt('Normal2_P4_LV.dat')
+	lv = np.loadtxt('RVshape\\LVendo_0.txt')
+	lv = np.array([lv[:,0],lv[:,1],-lv[:,2]]).T*1000
 
 	# find points within the vicinity of the maximum z point value
 	P = genPts(lv)
@@ -26,22 +27,26 @@ def main():
 	# lvData = [long_axis, mvcenter, apex]
 
 	####### Now work with the RV #######
-	rv_file = 'N2_RV_P4'
-	rv = np.loadtxt(rv_file + '.dat')
+	rv_file = 'processed_RVendo_0'
+	rv = np.loadtxt(rv_file + '.txt')
 	# plot_lv_rv(lv,rv,mvcenter,apex)
 
 	# Transform the RV into LV centric system 
 	apex, lv, rv = transform(apex,mvcenter,long_axis,lv,rv)	
-	np.savetxt('transformed_' + rv_file + '.csv',rv,delimiter = ',')
+	# np.savetxt('transformed_' + rv_file + '.csv',rv,delimiter = ',')
 	print(apex)
 	
 	mvcenter = np.zeros((3))
 	# print(mvcenter)
 
 	# Plot the LV-RV system for visualization 
-	plot_lv_rv(lv,rv,mvcenter,apex)	
+	# plot_lv_rv(lv,rv,mvcenter,apex)	
 	# # generates points that fit a plane at the PV
+	
 	pv_vec,pv_ctd = genPVpts(rv)
+	
+	print("pvpoints:")
+	print("\n")
 	print(pv_vec,pv_ctd)
 
 	# # generates points that fit a plane at the apex
@@ -49,14 +54,18 @@ def main():
 
 	print(rw_vec,rw_ctd)
 
-	plot_endPlanes(pv_vec,rw_vec,pv_ctd,rw_ctd)
+	plot_endPlanes(rv,pv_vec,rw_vec,pv_ctd,rw_ctd)
 
-	# # Initiate the Bezier Curve (central axis) having fixed end points and normals
-	# gp0 = rwPt[1][0]
-	# gp1 = pvPt[1][0]
-	# ctrl_pts = guess_CA(rwPt, pvPt, gp0, gp1)
-	
-	# plot_bezier(cpts_0)
+	# Initiate the Bezier Curve (central axis) having fixed end points and normals
+	# should probably find a better way of "guessing"
+	gp0 = rw_ctd[0]*0.9
+	gp1 = pv_ctd[0]*0.8
+	print(rw_vec,pv_vec,rw_ctd,pv_ctd, gp0, gp1)
+	p0,p1,p2,p3 = guess_CA(rw_vec,pv_vec,rw_ctd,pv_ctd, gp0, gp1)
+	bezier_cpts = np.array([p0,p1,p2,p3])
+	print(bezier_cpts)
+	plot_bezier(rv,p0,p1,p2,p3)
+	plt.show()
 
 	# # section the RV using the CA (central axis)
 

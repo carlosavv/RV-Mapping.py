@@ -12,11 +12,12 @@ def affine_fit(X):
     issue: inconsistencies with return parameter v - 3x3 matrix of eigenvectors  
     '''
     
-    p = np.mean(X, axis=0)
+    p = np.mean(X,axis = 0)
     # pmeany = np.mean(X,axis =1)
     # pmeanz = np.mean(X,axis=2)
     # p = np.array([[pmeanx,pmeany,pmeanz]])
-    R = np.array(X[...,:] - p)
+    R = X - p
+    # print("R = ", R)
     t = np.matmul(R.T, R)
     w,v = np.linalg.eig(t)
 
@@ -24,10 +25,14 @@ def affine_fit(X):
 
     # print("w = \n", w)
     # print('')
-    print("v = \n", v)
-    print('')
+    # print("v = \n", v)
+    # print('')
     n = np.array(v[:,2])
+    # print("n = \n", n)
+    # print('')
     V = np.array(v[:,0])
+    # print("V = \n", V)
+    # print('')
     # t = np.array(v[2][:])
 
     return [n,V,p]

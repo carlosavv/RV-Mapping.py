@@ -4,7 +4,8 @@ from plot_LV_RV import plot_rv
 
 
 # generates points that fit a plane at the apex
-
+# contains a point lying in the plane that fits the RW -> ctd_rw
+# contains normal of the plane fitting the RW -> vrw
 def genApexPts(rv,pv_ctd):
 
 	plot_rv(rv)
